@@ -1,9 +1,28 @@
-import { Elysia } from 'elysia'
+import { initialGameState } from './game'
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
-const app = new Elysia()
-	.get('/', () => 'Hello Elysia')
-	.listen(3000)
+dotenv.config(); // Load environment variables
 
-console.log(
-	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-)
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json()); // Parse JSON body
+
+// Routes
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to Express API!" });
+});
+
+// Example API Route
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello, world!" });
+});
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
