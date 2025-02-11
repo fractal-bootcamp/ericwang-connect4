@@ -170,4 +170,4 @@ const winningGameState:GameState = {
 move(winningGameState, 23)
 
 
-export {initialGameState}
+export {initialGameState, Board, Player, Status, GameState}
