@@ -1,14 +1,28 @@
 import React from 'react'
 
+type Player = 1 | 2 | null
 type CellProps = {
-    player: number,
+    player: Player | undefined,
     index: number
 }
 
 const Cell: React.FC<CellProps> = ({ player, index }) => {
+  let color:string;
+  switch(player) {
+    case(1):
+      color ='bg-red-400'
+      break
+    case(2):
+      color = 'bg-blue-400'
+      break
+    default:
+      color = 'bg-neutral-400'
+      break
+  }
+
   return (
     <article
-        className={`rounded-full p-6  h-[75px] ${ player === 1 ? 'bg-red-400':'bg-neutral-400'}`}
+        className={`rounded-full p-6  h-[75px] ${ color }`}
     >
       <div>{index}</div>
       <div>{player}</div>
