@@ -1,7 +1,47 @@
 import './App.css'
+import Col from './components/Col'
+import { useState, useEffect } from 'react'
 
 function App() {
+  type ColState = Record<number, number[]>
+  const initialColState = {
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+  }
 
+  const [colState, setColState] = useState<ColState>(initialColState)
+  const [player, setPlayer] = useState(2)
+
+  const handleColumnClick = (colIndex:number, allIndexes: number[]) => {
+    setColState((prevState) => {
+      const newState = [];
+      allIndexes.forEach((index) => {
+        if(prevState[colIndex].includes(index)) {
+          newState.push(index)
+        }
+      })
+
+      if(allIndexes[allIndexes.length - prevState[colIndex].length-1] === 0 || allIndexes[allIndexes.length - prevState[colIndex].length-1]) {
+        newState.unshift(allIndexes[allIndexes.length - prevState[colIndex].length-1])
+      }
+
+      return {
+        ...prevState,
+        [colIndex]: [...newState]
+      }
+    })
+
+    setPlayer(player === 1 ? 2 : 1)
+  } 
+
+  useEffect(() => {
+    console.log("state:", colState)
+  },[colState])
 
   return (
     <>
@@ -15,27 +55,13 @@ function App() {
           <div className='px-3'>
           <div className='rounded-full w-[75px] h-[75px] bg-red-800 mb-4'></div>
         </div>
-        <div className='grid grid-rows-6 grid-cols-7 w-full rounded-xl overflow-hidden p-4 bg-neutral-700'>
-          {Array.from({ length: 42 }, (_, i) => (
-            <div className='bg-neutral-00 h-[calc(700px/7)] w-[calc(700px/7)] p-2'>
-              <div className='bg-neutral-800 rounded-full h-full w-full'>{i}</div>
-            </div>
+        <div className='grid grid-cols-7 w-full gap-4 rounded-xl overflow-hidden p-4 bg-neutral-700'>
+          {Array.from({ length: 7 }, (_, i) => (
+              <Col colIndex={i} handleColumnClick={handleColumnClick} player={player} />
           ))}
         </div>
-
         </div>
       </div>
-      {/* <h1 className='font-bold mb-8'>Tailwind CSS Connect Four</h1>
-      <div className='px-3'>
-        <div className='rounded-full w-[75px] h-[75px] bg-red-800 mb-4'></div>
-      </div>
-      <div className='grid grid-rows-6 grid-cols-7 w-full rounded-xl overflow-hidden'>
-        {Array.from({ length: 42 }, (_, i) => (
-          <div className='bg-gray-500 h-[calc(700px/7)] w-[calc(700px/7)] p-3'>
-            <div className='bg-gray-800 rounded-full h-full w-full'/>
-          </div>
-        ))}
-      </div> */}
     </main>
     </>
   )
